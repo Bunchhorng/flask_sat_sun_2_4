@@ -1,0 +1,78 @@
+{% extends 'layout/base.html' %}
+{% block title %}Category List{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Page Header & Action Bar -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 fw-bold text-dark mb-1">Category List</h1>
+            <p class="text-body-secondary small mb-0">Manage product categories and descriptions</p>
+        </div>
+        <a href="{{url_for('category_create')}}" class="btn btn-primary d-inline-flex align-items-center gap-2 shadow-sm fw-medium">
+            <i class="bi bi-plus-lg"></i>
+            Add New Category
+        </a>
+    </div>
+
+    <!-- Data Table Container Card -->
+    <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light border-bottom">
+                        <tr class="text-uppercase text-body-secondary fs-7 fw-semibold">
+                            <th scope="col" class="py-3 px-4" style="width: 80px;">#</th>
+                            <th scope="col" class="py-3 px-4">Name</th>
+                            <th scope="col" class="py-3 px-4">Description</th>
+                            <th scope="col" class="py-3 px-4 text-end" style="width: 140px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y">
+                        {% for cat in data %}
+                            <tr>
+                                <td class="py-3 px-4 text-body-secondary fw-semibold">{{cat.id}}</td>
+                                <td class="py-3 px-4">
+                                    <span class="fw-semibold text-dark">{{cat.name}}</span>
+                                </td>
+                                <td class="py-3 px-4 text-body-secondary">
+                                    {{cat.description}}
+                                </td>
+                                <td class="py-3 px-4 text-end">
+                                    <div class="d-inline-flex gap-1">
+                                        <a href="{{url_for('category_update', id=cat.id)}}" class="btn btn-sm btn-light text-primary border-0 rounded-2" title="Edit">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </a>
+                                        <form action="{{url_for('category_delete', id=cat.id)}}" class="d-inline" method="POST">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-light text-danger border-0 rounded-2"
+                                                    title="Delete"
+                                                    onclick="return confirm('Are you sure you want to delete this category?')">
+
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        <!-- Additional Rows Follow Same Structure -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Table Footer / Pagination Placeholder -->
+        <div class="card-footer bg-white border-top py-3 px-4 d-flex justify-content-between align-items-center">
+            <small class="text-body-secondary">Showing 1 to 1 of 1 entry</small>
+            <nav aria-label="Table navigation">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

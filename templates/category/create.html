@@ -1,0 +1,68 @@
+{% extends 'layout/base.html' %}
+{% block title %}Create Category{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Header / Breadcrumb Bar -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{{url_for('category_index')}}" class="text-decoration-none">Categories</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
+            <h1 class="h3 fw-bold text-dark mb-0">Add New Category</h1>
+        </div>
+        <a href="{{url_for('category_index')}}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 fw-medium">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4">
+            <form action="{{url_for('category_create')}}" method="POST">
+                <div class="row g-4">
+                    <!-- Category Name -->
+                    <div class="col-md-6">
+                        <label for="categoryName" class="form-label fw-semibold text-dark">
+                            Category Name <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="categoryName" 
+                            name="name" 
+                            placeholder="e.g. Electronics, Clothing..." 
+                            required
+                        >
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-12">
+                        <label for="categoryDescription" class="form-label fw-semibold text-dark">Description</label>
+                        <textarea 
+                            class="form-control" 
+                            id="categoryDescription" 
+                            name="description" 
+                            rows="4" 
+                            placeholder="Provide a brief description of this category..."
+                        ></textarea>
+                    </div>
+                </div>
+
+                <hr class="my-4 text-secondary opacity-25">
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-light fw-medium px-4">Reset</button>
+                    <button type="submit" class="btn btn-primary fw-medium px-4 d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-check-lg"></i> Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
