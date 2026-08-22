@@ -1,0 +1,120 @@
+{% extends 'layout/base.html' %}
+{% block title %}Create Product{% endblock %}
+
+{% block content %}
+<div class="container-fluid p-0">
+    <!-- Header / Breadcrumb Bar -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{{url_for('index_product')}}" class="text-decoration-none">Products</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Create</li>
+                </ol>
+            </nav>
+            <h1 class="h3 fw-bold text-dark mb-0">Edit Product</h1>
+        </div>
+        <a href="{{url_for('category_index')}}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 fw-medium">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="card border-0 shadow-sm rounded-3">
+        <div class="card-body p-4">
+            <form action="{{url_for('create_product')}}" method="POST" enctype="multipart/form-data">
+                <div class="row g-4">
+                    <!-- Category Name -->
+                    <div class="col-md-6">
+                        <label for="productName" class="form-label fw-semibold text-dark">
+                            Product Name <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="productName" 
+                            name="productName" 
+                            placeholder="e.g. Asus, The Power..." 
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="productPrice" class="form-label fw-semibold text-dark">
+                            Product Price <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="productPrice" 
+                            name="productPrice" 
+                            placeholder="0.0$" 
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="productQty" class="form-label fw-semibold text-dark">
+                            Product quantity <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="productQty" 
+                            name="productQty" 
+                            placeholder="00..." 
+                            required
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="productImage" class="form-label fw-semibold text-dark">
+                            Product quantity <span class="text-danger">*</span>
+                        </label>
+                        <input 
+                            type="file" 
+                            class="form-control" 
+                            id="productImage" 
+                            name="image" 
+                        >
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="productCategory" class="form-label fw-semibold text-dark">
+                            Product Category <span class="text-danger">*</span>
+                        </label>
+                        <select 
+                            class="form-select" 
+                            id="productCategory" 
+                            name="category_id"
+                            required
+                        >
+                            <option value="" selected disabled>
+                                -- Select Category --
+                            </option>
+                            {% for cat in categories %}
+                                <option value="{{cat.id}}">{{cat.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">
+                            Choose the category for this product.
+                        </div>
+                    </div>
+                    
+
+                </div>
+
+                <hr class="my-4 text-secondary opacity-25">
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-light fw-medium px-4">Reset</button>
+                    <button type="submit" class="btn btn-primary fw-medium px-4 d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-check-lg"></i> Save Category
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

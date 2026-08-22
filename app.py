@@ -86,10 +86,21 @@ def category_delete(id):
 # product route
 @app.route('/product/')
 def index_product():
-    return render_template('product/index.html')
+    db = connect_db()
+    cursor = db.cursor()
+    query = """
+        SELECT p.*, c.name AS category_name 
+        FROM products p
+        LEFT JOIN categories c ON p.category_id = c.id
+    """
+    cursor.execute(query)
+    products = cursor.fetchall()
+    cursor.close()
+    db.close()
+    return render_template('product/index.html', products=products)
 
 
-UPLOAD_FOLDER = "uploads/products"
+UPLOAD_FOLDER = "static/uploads/products"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
@@ -151,5 +162,66 @@ def create_product():
         return redirect(url_for('index_product'))
     return render_template('product/create.html', categories=categories)
 
+@app.route('/product/delete/<int:id>', methods=['POST'])
+def delete_product(id):
+    db = connect_db()
+    cursor = db.cursor()
+
+    cursor.execute('SELECT * FROM products where id=%s', (id,))
+    product = cursor.fetchone()
+    
+    if not product:
+        cursor.close()
+        db.close()
+        return "Product not found!"
+
+    cursor.execute('DELETE FROM products WHERE id=%s', (id,))
+    db.commit()
+    cursor.close()
+    db.close()
+    return redirect(url_for('index_product'))
+
+@app.route('/product/edit/<int:id>', methods=['GET', 'POST'])
+def update_product(id):
+    db = connect_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT*FROM products WHERE id=%s", (id,))
+    product = cursor.fetchone()
+
+    if not product:
+        cursor.close()
+        db.close()
+        return "Product not Found!404"
+
+    if request.method == "POST":
+        new_name = request.form['productName']
+        new_price = request.form['productPrice']
+        new_qty = request.form['qty']
+        category_id = request.form['category_id']
+
+        image_name = product['image']
+
+        image = request.files.get('image')
+        if image and image.filename and allowed_file(image.filename):
+            if product['image']:
+                old_img_path = os.path.join(app.config["UPLOAD_FOLDER"], product['image'])
+                if os.path.exists(old_img_path):
+                    os.remove(old_img_path)
+
+                image_name = secure_filename(image.filename)
+                image.save(os.path.join(app.config["UPLOAD_FOLDER"], image_name))
+        
+        query = """
+            UPDATE products 
+            SET name=%s, price=%s, quantity=%s, category_id=%s, image=%s
+            WHERE id=%s
+        """
+        cursor.execute(query, (new_name,new_price, new_qty, category_id, image_name, id))
+        db.commit()
+        cursor.close()
+        db.close()
+        return redirect(url_for('index_product'))
+    return render_template('product/edit.html', product=product)
+            
 if __name__=="__main__":
     app.run(debug=True)

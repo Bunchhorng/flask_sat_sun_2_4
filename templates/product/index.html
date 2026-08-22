@@ -32,25 +32,34 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y">
-                        <!-- {% for cat in data %}
+                        {% for pro in products %}
                             <tr>
-                                <td class="py-3 px-4 text-body-secondary fw-semibold">{{cat.id}}</td>
+                                <td class="py-3 px-4 text-body-secondary fw-semibold">{{loop.index}}</td>
                                 <td class="py-3 px-4">
-                                    <span class="fw-semibold text-dark">{{cat.name}}</span>
+                                    <span class="fw-semibold text-dark">{{pro.name}}</span>
                                 </td>
                                 <td class="py-3 px-4 text-body-secondary">
-                                    {{cat.description}}
+                                    {{pro.price}}
+                                </td>
+                                <td class="py-3 px-4 text-body-secondary">
+                                    {{pro.category_name}}
+                                </td>
+                                <td class="py-3 px-4 text-body-secondary">
+                                    {{pro.quantity}}
+                                </td>
+                                <td>
+                                    <img src="{{ url_for('static', filename='uploads/products/' ~ pro.image) }}" width="60px" height="60px" class="object-fit-cover" alt="{{ pro.name }}">
                                 </td>
                                 <td class="py-3 px-4 text-end">
                                     <div class="d-inline-flex gap-1">
-                                        <a href="{{url_for('category_update', id=cat.id)}}" class="btn btn-sm btn-light text-primary border-0 rounded-2" title="Edit">
+                                        <a href="{{url_for('update_product', id = pro.id)}}" class="btn btn-sm btn-light text-primary border-0 rounded-2" title="Edit">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <form action="{{url_for('category_delete', id=cat.id)}}" class="d-inline" method="POST">
+                                        <form action="{{ url_for('delete_product', id=pro.id) }}" class="d-inline" method="POST">
                                             <button type="submit"
                                                     class="btn btn-sm btn-light text-danger border-0 rounded-2"
                                                     title="Delete"
-                                                    onclick="return confirm('Are you sure you want to delete this category?')">
+                                                    onclick="return confirm('Are you sure you want to delete this product?')">
 
                                                 <i class="bi bi-trash"></i>
                                             </button>
@@ -58,7 +67,7 @@
                                     </div>
                                 </td>
                             </tr>
-                        {% endfor %} -->
+                        {% endfor %}
                         <!-- Additional Rows Follow Same Structure -->
                     </tbody>
                 </table>
